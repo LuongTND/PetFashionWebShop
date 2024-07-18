@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:orangered">Order</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+    {
+        <div class="form-group">
+            <label for="userId">User:</label>
+            @Html.DropDownList("userId", ViewBag.Users as SelectList, "Select a User", new { @class = "form-control" })
+        </div>
+
+
+
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderReceivedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderReceivedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount.DiscountName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PetFashionWebShop.Models.ProductImage>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:orangered">Image Product</h1>
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+    @using (Html.BeginForm("Index", "ProductImages", FormMethod.Get))
+    {
+        <div class="form-group">
+            <label for="productId">Product:</label>
+            @Html.DropDownList("productId", ViewBag.Products as SelectList, "Select a product", new { @class = "form-control" })
+        </div>
+
+@*         <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <input type="text" name="productName" id="productName" class="form-control" />
+        </div> *@
+
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    }
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ProductImageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ImageProduct)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductImageId)
+                </td>
+               
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.ImageProduct)" style="width: 100px; height: auto;" />
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

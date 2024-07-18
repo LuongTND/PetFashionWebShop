@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFashionWebShop", "PetFashionWebShop\PetFashionWebShop.csproj", "{7049BA71-7D81-47DC-9262-B3F7AC9A0483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetFashionWebShop", "PetFashionWebShop\PetFashionWebShop.csproj", "{7049BA71-7D81-47DC-9262-B3F7AC9A0483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

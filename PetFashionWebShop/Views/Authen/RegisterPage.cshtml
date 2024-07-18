@@ -1,0 +1,34 @@
+﻿@model PetFashionWebShop.ModelServices.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<section id="register" style="background: url('/images/background-img.png') no-repeat;">
+    <div class="container ">
+        <div class="row my-5 py-5">
+            <div class="offset-md-3 col-md-6 my-5 ">
+                <h2 class="display-7 fw-normal text-center">
+                    Register <span class="text-primary">Get 20% Off On First Purchase</span>
+                </h2>
+                @using (Html.BeginForm("Register", "Authen", FormMethod.Post, new { @class = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Enter Your Email Address" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Enter Your Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-lg", placeholder = "Confirm Your Password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-info btn-lg rounded-1">Register Now</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

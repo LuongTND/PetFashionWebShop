@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "CartPanel";
+}
+
+<a asp-controller="Cart" asp-action="Index" class="mx-3">
+    <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
+    <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
+        @Model.Quantity
+    </span>
+</a>
+

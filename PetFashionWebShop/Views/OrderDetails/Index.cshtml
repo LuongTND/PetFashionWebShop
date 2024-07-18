@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.StatusOrder)
+            </td>
+            <td>
+               <img src="@Html.DisplayFor(modelItem => item.Product.Image)" style="width: 100px; height: auto;" />
+
+            </td>
+            <td>
+               
+                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> 
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

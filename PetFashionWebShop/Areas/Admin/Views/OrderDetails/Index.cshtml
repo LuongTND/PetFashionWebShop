@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:orangered">Order Detail</h1>
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+    @using (Html.BeginForm("Index", "OrderDetails", FormMethod.Get))
+    {
+        <div class="form-group">
+            <label for="orderId">Oder:</label>
+            @Html.DropDownList("orderId", ViewBag.Orders as SelectList, "Select a OrderID", new { @class = "form-control" })
+        </div>
+
+
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Order) *@
+                Order Status
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.StatusOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

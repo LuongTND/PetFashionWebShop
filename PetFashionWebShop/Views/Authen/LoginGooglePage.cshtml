@@ -1,0 +1,64 @@
+﻿@model PetFashionWebShop.ModelServices.LoginViewModel
+@{
+    ViewData["Title"] = "Login Google";
+}
+@* <h1>@ViewData["Title"]</h1> *@
+
+<section id="register" style="background: url('/images/background-img.png') no-repeat;">
+    <div class="container ">
+        <div class="row my-5 py-5">
+            <div class="offset-md-3 col-md-6 my-5 ">
+                <h2 class="display-7 fw-normal text-center">
+                    Login <span class="text-primary">Get 20% Off On First Purchase</span>
+                </h2>
+                @* <form>
+                    <div class="mb-3">
+                        <input type="email" class="form-control form-control-lg" name="Email" id="Email"
+                               placeholder="Enter Your Email Address">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control form-control-lg" name="Password" id="Password"
+                               placeholder="Enter Your Password">
+                    </div>
+                    <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info btn-lg rounded-1" icon="ri:google-fill">Login Now</button>
+                    </div> 
+                    <div class="d-grid gap-2">
+                        <a asp-action="LoginGoogle" asp-controller="Authen" class="btn btn-danger btn-lg rounded-1 google-login" style="display: flex; align-items: center; justify-content: center;">
+                            <img src="	https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google Icon" class="google-icon" style="width: 24px; height: 24px; margin-right: 10px;">
+                            Login with Google
+                        </a>
+                    </div>
+                    
+                </form> *@
+                @using (Html.BeginForm("Login", "Authen", FormMethod.Post, new { @class = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Enter Your Email Address" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Enter Your Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-info btn-lg rounded-1">Login Now</button>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("LoginGoogle", "Authen")" class="btn btn-danger btn-lg rounded-1 google-login" style="display: flex; align-items: center; justify-content: center;">
+                            <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" alt="Google Icon" class="google-icon" style="width: 24px; height: 24px; margin-right: 10px;">
+                            Login with Google in Mobile
+                        </a>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Authen" asp-action="RegisterPage" class="btn btn-warning  btn-lg rounded-1 google-login" style="display: flex; align-items: center; justify-content: center;">
+                            You don't have Registered
+                        </a>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</section>

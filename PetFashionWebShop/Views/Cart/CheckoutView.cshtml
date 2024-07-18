@@ -1,0 +1,315 @@
+﻿@using System.Security.Claims
+@* @using PetFashionWebShop.Models.DTOs
+@using PetFashionWebShop.Controllers
+@model CheckoutModel
+
+@{
+    ViewData["Title"] = "CheckoutView";
+}
+
+<section id="register" style="background: url('/images/background-img.png') no-repeat;">
+    <h2 class="display-10 fw-normal text-center">
+        Start <span class="text-primary">Checkout</span>
+    </h2>
+
+    <form asp-action="Checkout">
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <!-- Right side: Other form fields -->
+                <div class="py-2">
+                    <label asp-for="Name">Name*</label>
+                    <input type="text" class="form-control" asp-for="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="py-2">
+                    <label asp-for="MobileNumber">Mobile Number*</label>
+                    <input type="text" class="form-control" asp-for="MobileNumber" />
+                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                </div>
+
+                <div class="py-2">
+                    <label asp-for="Address">Address*</label>
+                    <textarea class="form-control" asp-for="Address" rows="5"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+
+
+
+                <!-- Left side: COD and button -->
+                <div class="py-2">
+                    <div class="form-group">
+                        <label asp-for="DiscountId" class="control-label"></label>
+                        <select asp-for="DiscountId" class="form-control" asp-items="ViewBag.DiscountId"></select>
+                    </div>
+
+                    <span class="mr-2">COD*</span>
+                    <select asp-for="PaymentMethod" class="form-control">
+                        <option value="">Select Payment Method</option>
+                        @foreach (var method in Enum.GetValues(typeof(PetFashionWebShop.Models.Enum.PaymentMethods)))
+                        {
+                            <option value="@method.ToString()">@method.ToString()</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                    <h5 class="mb-0 ps-4 me-4">Total</h5>
+                    <p class="mb-0 pe-4">$@Model.Sum(p => p.ThanhTien)</p>
+                </div>
+                <div class="py-2">
+                    <button type="submit" class="btn btn-info">Next</button>
+                    <button class="btn btn-danger rounded-pill px-4 py-3 text-danger text-uppercase mb-4 ms-4"  type="submit">-  Next  -</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+ *@
+
+ @model IEnumerable<PetFashionWebShop.ModelServices.CartItem>
+@{
+    ViewData["Title"] = "Checkout";
+    var userid = User.FindFirstValue("Id");
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Xin Lỗi Bạn',
+                text: '@ViewBag.ErrorMessage',
+            });
+        });
+    </script>
+}
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Billing details</h1>
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <a class="btn btn-info text-uppercase text-primary w-100 mt-2" asp-action="Index" asp-controller="UserDetails" >Thay đổi thông tin nhận hàng</a>
+            </div>
+        </div>
+        <form asp-action="Checkout" asp-controller="Cart">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    @* <div class="form-check my-3">
+                    <input type="checkbox" name="GiongKhachHang" class="form-check-input" id="GiongKhachHang" value="false">
+                    <label class="form-check-label" for="GiongKhachHang">Giống thông tin khách hàng?</label>
+                    </div>
+                    <div class="form-item delivery-info">
+                    <label class="form-label my-3">Người nhận hàng<sup>*</sup></label>
+                    <input type="text" name="HoTen" class="form-control">
+                    </div>
+                    <div class="form-item delivery-info">
+                    <label class="form-label my-3">Địa chỉ nhận hàng<sup>*</sup></label>
+                    <input type="text" name="DiaChi" class="form-control" placeholder="123 Lê Lợi, Quận 1">
+                    </div>
+                    <div class="form-item delivery-info">
+                    <label class="form-label my-3">Điện thoại<sup>*</sup></label>
+                    <input type="text" name="DienThoai" class="form-control">
+                    </div> *@
+
+                    <div class="form-item mt-3">
+                        <textarea name="GhiChu" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="Ghi chú: Tên Sản Phẩm, Size, Màu"></textarea>
+                    </div>
+                    <div class="form-item ">
+                        <label class="form-label my-3">Discount</label>
+                        <select id="DiscountId" name="DiscountId" class="form-control" asp-items="ViewBag.DiscountId"></select>
+                    </div>
+                    @* <div class="form-group">
+                    <label asp-for="DiscountId" class="control-label"></label>
+                    <select asp-for="DiscountId" class ="form-control" asp-items="ViewBag.DiscountId"></select>
+                    </div> *@
+                    <input type="submit" name="payment" class="btn btn-danger text-uppercase text-primary w-100 mt-2" value="Đặt hàng (COD)">
+                    <input type="submit" name="payment" class="btn btn-danger text-uppercase text-primary w-100 mt-2" value="Thanh toán VNPay">
+                    <input type="submit" name="payment" class="btn btn-danger text-uppercase text-primary w-100 mt-2" value="Tạo mã QR Thanh Toán">
+                    @* <a class="btn btn-danger text-uppercase text-primary w-100 mt-2" asp-action="Index" asp-controller="Payment">Tạo mã QR Thanh Toán</a> *@
+                    <div id="paypal-button-container" class="form-item mt-3" style="max-width:1000px;"></div>
+                    <tr>
+                        <th scope="row">
+                        </th>
+                        <td class="py-5"> <p class="mb-0 text-uppercase py-3" style="color:blueviolet">Total => @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.Sum(p => p.ThanhTien))</p></td>
+                        <td class="py-5"> <p class="mb-0 py-3 " style="color:orangered; font-size:large"> After apply Coupon + Shipping around to Viet Nam : 25.000 VND</p></td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                        </th>
+                       @*  <td class="py-5"> <p class="mb-0  py-3" style="color:orange">Shipping around to Viet Nam : 25.000 VND</p></td> *@
+                        <td class="py-5"> <p class="mb-0 text-uppercase py-3" style="color:blueviolet; font-size:30px">You Need Pay : </p> <div id="cartTotal" class="mb-0 text-uppercase py-3" style="color:blueviolet; font-size:30px">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.Sum(p => p.ThanhTien))</div> <p class="mb-0 text-uppercase py-3" style="color:blueviolet; font-size:30px"> + 25.000 VND </p></td>
+
+                    </tr>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-5">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Products</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="@item.Hinh" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="@item.TenHH" />
+                                            </div>
+                                        </th>
+                                        <td class="py-5">@item.TenHH</td>
+                                        <td class="py-5">
+                                            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.DonGia)
+                                        </td>
+                                        <td class="py-5">@item.SoLuong</td>
+                                        <td class="py-5">
+                                            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.ThanhTien)
+                                        </td>
+                                    </tr>
+                                }
+                                @* <tr>
+                                <th scope="row">
+                                </th>
+                                <td class="py-5"></td>
+                                <td class="py-5"></td>
+                                <td class="py-5">
+                                <p class="mb-0 text-dark py-3">Subtotal</p>
+                                </td>
+                                <td class="py-5">
+                                <div class="py-3 border-bottom border-top">
+                                <p class="mb-0 text-dark">   @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.Sum(p => p.ThanhTien)) </p>
+                                </div>
+                                </td>
+                                </tr> *@
+                                <tr> <h8 style="color:orchid">Nón bảo hiểm chó mèo có 2 size nhỏ: đường kính 10cm, dây dài 23cm (có thể điều chỉnh). phù hợp với chó từ 2-6kg, mèo từ 3-7kg Size lớn: đường kính 12cm, dây dài 29cm (có thể điều chỉnh). phù hợp vs chó từ 7-12kg, mèo trên 7kg</h8></tr>
+                                <tr>
+                                    <img src="https://i.pinimg.com/736x/6e/05/28/6e05288575438fdd62358a003f6bbda5.jpg" style="width: 400px; height: auto;" />
+
+
+                                </tr>
+                                @* <tr>
+                                <th scope="row">
+                                </th>
+                                <td class="py-5"> <p class ="mb-0 text-uppercase py-3" style="color:blueviolet">After apply Coupon =></p></td>
+                                <td class="py-5"></td>
+                                <td class="py-5"></td>
+                                <td class="py-5">
+                                <div class="py-3 border-bottom border-top">
+                                <p class="mb-0 "><div id="cartTotal" style="color:orangered; font-size:large"> @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.Sum(p => p.ThanhTien))</div></p>
+                                </div>
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <th scope="row">
+                                </th>
+                                <td class="py-5"> <p class="mb-0 text-uppercase py-3" style="color:orange">Shipping around to Viet Nam.</p></td>
+                                <td class="py-5"><p class="mb-0 text-uppercase py-3" style="color:blueviolet">You need Pay:</p></td>
+                                <td class="py-5">25.000 VND</td>
+                                <td class="py-5">
+                                <div class="py-3 border-bottom border-top">
+                                <p class="mb-0 "><div id="cartTotal" style="color:orangered; font-size:large"> @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", (Model.Sum(p => p.ThanhTien) + 25000))</div></p>
+                                </div>
+                                </td>
+                                </tr> *@
+
+                                @*                                     <td colspan="3" class="py-5">
+                                <div class="form-check text-start">
+                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-1" name="Shipping-1" value="Shipping">
+                                <label class="form-check-label" for="Shipping-1">Free Shipping</label>
+                                </div>
+                                <div class="form-check text-start">
+                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-2" name="Shipping-1" value="Shipping">
+                                <label class="form-check-label" for="Shipping-2">Flat rate: $15.00</label>
+                                </div>
+                                <div class="form-check text-start">
+                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-3" name="Shipping-1" value="Shipping">
+                                <label class="form-check-label" for="Shipping-3">Local Pickup: $8.00</label>
+                                </div>
+                                </td> *@
+                                @* </tr>
+                                <tr>
+                                <th scope="row">
+                                </th>
+                                <td class="py-5">
+                                <p class="mb-0  text-uppercase py-3" style="color:darkgreen">TOTAL</p>
+                                </td>
+                                <td class="py-5"></td>
+                                <td class="py-5"></td>
+                                <td class="py-5">
+                                <div class="py-3 border-bottom border-top">
+                                <p class="mb-0 "><div id="cartTotal" style="color:orangered; font-size:large"> @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.Sum(p => p.ThanhTien))</div></p>
+                                </div>
+                                </td>
+                                </tr> *@
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @*                     <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                    <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
+                    </div> *@
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        // $(document).ready(function () {
+        //     $("#GiongKhachHang").change(function () {
+        //         if ($(this).prop("checked")) {
+        //             $(this).val(true);
+        //             $(".delivery-info").addClass("d-none");
+        //         } else {
+        //             $(this).val(false);
+        //             $(".delivery-info").removeClass("d-none");
+        //         }
+        //     });
+        // });
+        $(document).ready(function () {
+            // Bắt sự kiện khi thay đổi giá trị của dropdown list
+            $('#DiscountId').change(function () {
+                var discountId = $(this).val();
+                // Gửi yêu cầu AJAX để cập nhật lại giá trị
+                $.ajax({
+                    url: '@Url.Action("UpdateCartTotal", "Cart")',
+                    type: 'GET',
+                    data: { discountId: discountId },
+                    success: function (result) {
+                        // Cập nhật lại giá trị trên view
+                        $('#cartTotal').text(result.newTotal);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+        // document.getElementById('DiscountId').addEventListener('change', function () {
+        //     this.disabled = true;
+        // });
+    </script>
+}

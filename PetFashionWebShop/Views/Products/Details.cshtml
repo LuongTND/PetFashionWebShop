@@ -1,0 +1,415 @@
+﻿@model Models.Product
+@using Data
+@using PetFashionWebShop.Services.Helpes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@* 
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitStock)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitStock)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+           
+            <img src=" @Html.DisplayFor(model => model.Image)" alt="Product Image" style="width: 100px; height: auto;" />
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitPriceOld)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitPriceOld)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd class = "col-sm-10">
+      
+            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.UnitPrice)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+        <dd class="col-sm-10">
+            <td>
+
+                <!-- Duyệt qua tất cả các hình ảnh của sản phẩm -->
+                @foreach (var image in Model.ProductImages)
+                {
+                    <!-- Hiển thị hình ảnh -->
+                    <img src="@image.ImageProduct" alt="Product Image" style="width: 100px; height: auto;" />
+                    <br />
+                }
+
+            </td>
+        </dd>
+ 
+        <!--Ratings  -->
+        <dd class="col-sm-10">
+            <td>
+                @foreach (var value in Model.Ratings)
+                {
+                    <span style="color:blueviolet">User : </span> @value.UserId
+                    <span style="color:blueviolet"> || Date : </span> @value.RatingDate
+                    <span style="color:blueviolet"> || Rate : </span> @value.RatingValue
+                }
+
+            </td>
+        </dd>
+
+
+        <!--Comments -->
+
+        <dd class="col-sm-10">
+            <td>
+
+
+                @foreach (var value in Model.Comments)
+                {
+                    <span style="color:blueviolet">User : </span>@value.UserId
+
+                    <span style="color:blueviolet">Date: </span>@value.CommentDate
+
+                    <span style="color:blueviolet">Comment: </span>@value.CommentText
+
+                }
+
+            </td>
+        </dd>
+
+    </dl>
+</div>
+<div>
+
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@
+
+
+
+<head>
+    <meta charset="utf-8">
+    <title>Shop Product Detail - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            margin-top: 70px;
+            background: #eee;
+        }
+
+        .panel {
+            border: none;
+            box-shadow: none;
+        }
+
+        .panel-heading {
+            border-color: #eff2f7;
+            font-size: 16px;
+        }
+
+        .panel-title {
+            color: #2A3542;
+            font-size: 14px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        .prod-cat li a {
+            border-bottom: 1px dashed #d9d9d9;
+            color: #3b3b3b;
+        }
+
+        .prod-cat li ul {
+            margin-left: 30px;
+        }
+
+            .prod-cat li ul li a {
+                border-bottom: none;
+            }
+
+                .prod-cat li ul li a:hover,
+                .prod-cat li ul li a:focus,
+                .prod-cat li ul li.active a,
+                .prod-cat li a:hover,
+                .prod-cat li a:focus,
+                .prod-cat li a.active {
+                    background: none;
+                    color: #ff7261;
+                }
+
+        .pro-lab {
+            margin-right: 20px;
+        }
+
+        .pro-sort {
+            padding-right: 20px;
+            float: left;
+        }
+
+        .pro-page-list {
+            margin: 5px 0 0 0;
+        }
+
+        .product-list img {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            -webkit-border-radius: 4px 4px 0 0;
+        }
+
+        .product-list .pro-img-box {
+            position: relative;
+        }
+
+        .adtocart {
+            background: #fc5959;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            color: #fff;
+            display: inline-block;
+            text-align: center;
+            border: 3px solid #fff;
+            left: 45%;
+            bottom: -25px;
+            position: absolute;
+        }
+
+            .adtocart i {
+                color: #fff;
+                font-size: 25px;
+                line-height: 42px;
+            }
+
+        .pro-title {
+            color: #5A5A5A;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .product-list .price {
+            color: #fc5959;
+            font-size: 15px;
+        }
+
+        .pro-img-details {
+            margin-left: -15px;
+        }
+
+            .pro-img-details img {
+                width: 100%;
+            }
+
+        .pro-d-title {
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .product_meta {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            margin: 15px 0;
+        }
+
+            .product_meta span {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .product_meta a,
+            .pro-price {
+                color: #fc5959;
+            }
+
+        .pro-price,
+        .amount-old {
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .amount-old {
+            text-decoration: line-through;
+        }
+
+        .quantity {
+            width: 120px;
+        }
+
+        .pro-img-list {
+            margin: 10px 0 0 -15px;
+            width: 100%;
+            display: inline-block;
+        }
+
+            .pro-img-list a {
+                float: left;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+
+        .pro-d-head {
+            font-size: 18px;}
+
+
+            /* comment */
+        .comment-wrapper .panel-body {
+            max-height: 650px;
+            overflow: auto;
+        }
+
+        .comment-wrapper .media-list .media img {
+            width: 64px;
+            height: 64px;
+            border: 2px solid #e5e7e8;
+        }
+
+        .comment-wrapper .media-list .media {
+            border-bottom: 1px dashed #efefef;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container bootdey">
+        <div class="col-md-12">
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="col-md-6">
+                        <div class="pro-img-details">
+                            <img src="@Html.DisplayFor(model => model.Image)" style="width: 550px; height: auto;" alt="Product Image">
+                        </div>
+                        <div class="pro-img-list">
+                            @foreach (var image in Model.ProductImages)
+                            {
+                            <a href="#">
+                                    <img src="@image.ImageProduct" style="width: 115px; height: auto;" alt="Product Thumbnail">
+                            </a>
+                            
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="pro-d-title">
+                            <a href="#">@Html.DisplayFor(model => model.ProductName)</a>
+                        </h4>
+                        <p>
+                            @Html.DisplayFor(model => model.Description)
+                        </p>
+                        <div class="product_meta">
+                            <span class="posted_in">
+                                <strong>Categories:</strong>
+                                <a rel="tag" href="#">@Html.DisplayFor(model => model.Category.CategoryName)</a>
+
+                            </span>
+                            
+                        </div>
+                        <div class="m-bot15">
+                            <strong>Price:</strong>
+                            <span class="amount-old">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.UnitPriceOld)</span>
+                            <span class="pro-price">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", Model.UnitPrice)</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Unit Stock: </label>
+                            @Html.DisplayFor(model => model.UnitStock)
+                            
+                        </div>
+                        <p>
+                            <a asp-action="Index" asp-controller="Products"  class="btn btn-round btn-info" type="button">
+                                <i class="fa fa-shopping-cart"></i> < Continue Shopping
+                            </a>
+                            <a asp-action="AddToCartFromDetail" asp-controller="Cart" asp-route-id="@Model.ProductId" class="btn btn-round btn-danger" type="button">
+                                <i class="fa fa-shopping-cart"></i> Add to Cart
+                            </a>
+                        </p>
+                        <p>
+                            <h4>Ghi chú size ở phần check out ( khi hoàn tất thủ tục cuối cùng để mua hàng</h4>
+                            <img src="https://i.pinimg.com/736x/6e/05/28/6e05288575438fdd62358a003f6bbda5.jpg" style="width: 400px; height: auto;" />
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row bootstrap snippets bootdeys">
+            <div class="col-md-12 col-sm-12">
+                <div class="comment-wrapper">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Comment panel
+                        </div>
+                        <div class="panel-body">
+                            @* <textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
+                            <br>
+                            <button type="button" class="btn btn-info pull-right">Post</button> *@
+                            @await Component.InvokeAsync("CreateComment", new { productId = Model.ProductId })
+
+                           @*  @await Component.InvokeAsync("CreateComment") *@
+                            <div class="clearfix"></div>
+                            <hr>
+                            <ul class="media-list">
+                                 @foreach (var value in Model.Comments)
+                                {
+                                <li class="media">
+                                    <a href="#" class="pull-left">
+                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt class="img-circle">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="text-muted pull-right">
+                                                <small class="text-muted">@value.CommentDate</small>
+                                        </span>
+                                            <strong  style="color:rebeccapurple">@UserHelper.GetUserName(value.UserId, ViewBag.ApplicationDBContext as ApplicationDBContext)</strong>
+                                        <p>
+                                                @value.CommentText
+                                        </p>
+                                    </div>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+</body>
+</html>

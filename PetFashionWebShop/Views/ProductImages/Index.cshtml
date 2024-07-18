@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PetFashionWebShop.Models.ProductImage>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+          
+            <td>
+                <img src="@Html.DisplayFor(modelItem => item.ImageProduct)" style="width: 100px; height: auto;" />
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                
+                <a asp-action="Details" asp-route-id="@item.ProductImageId">Details</a> 
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

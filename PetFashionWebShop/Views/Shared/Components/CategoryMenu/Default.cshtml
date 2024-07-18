@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Models.Category>
+
+<a class="nav-link dropdown-toggle nav-link fw-bold text-dark border-0 mb-0 me-5 mt-2" role="button" id="Category" data-bs-toggle="dropdown" aria-expanded="false">Shop by Category</a>
+<ul class="dropdown-menu" aria-labelledby="Category">
+    @foreach (var category in Model)
+    {
+        <li>
+            <a class="dropdown-item" href="@Url.Action("Index", "Products", new { categoryId = category.CategoryId })">
+                @category.CategoryName
+                <span class="badge bg-success text-dark ms-2">Hot</span>
+            </a>
+        </li>
+    }
+</ul>

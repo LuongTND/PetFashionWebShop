@@ -1,0 +1,171 @@
+﻿@model IEnumerable<Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*
+<form method="get" asp-controller="Products" asp-action="Index" style="margin-top:70px">
+    <select name="categoryId" asp-items="@(ViewData["CategoryId"] as SelectList)">
+        <option value="">All Categories</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPriceOld)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitStock)
+            </td>
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Image)" style="width: 100px; height: auto;" />
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPriceOld)
+            </td>
+            <td>
+                    @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+               @*  <td>
+
+                    <!-- Duyệt qua tất cả các hình ảnh của sản phẩm -->
+                    @foreach (var image in item.ProductImages)
+                    {
+                        <!-- Hiển thị hình ảnh -->
+                        <img src="@image.ImageProduct" alt="Product Image" style="width: 100px; height: auto;" />
+                        <br />
+                    }
+
+                </td> *@
+@*          <td>
+      
+                <a asp-action="Details"  asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.ProductId">Add to Cart</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@
+<style type="text/css">
+     .amount-old {
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .amount-old {
+            text-decoration: line-through;
+    }
+ </style>
+
+<section id="foodies" class="my-5">
+    
+    <div class="container my-5 py-5">
+
+        <div class="section-header d-md-flex justify-content-between align-items-center">
+            <h2 class="display-3 fw-normal">All Product 🧡</h2>
+           
+            @await Component.InvokeAsync("CategoryFilter")
+            <div>
+                <a href="#" class=" btn-lg text-uppercase fs-6 rounded-1">
+                    @* shop now
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
+                        <use xlink:href="#arrow-right"></use>
+                    </svg> *@
+                </a>
+            </div>
+        </div>
+
+        <div class="isotope-container row">
+
+            @foreach (var item in Model) {
+                <div class="item @item.Category.CategoryName.ToLower() col-md-4 col-lg-3 my-4">
+                   @*  <div class="item cat col-md-4 col-lg-3 my-4"> *@
+                <div class="card position-relative">
+                        <a asp-action="Details" asp-route-id="@item.ProductId"><img src="@Html.DisplayFor(modelItem => item.Image)" class="img-fluid rounded-4" alt="image"></a>
+                    <div class="card-body p-0">
+                            <a asp-action="Details" asp-route-id="@item.ProductId">
+                                <h3 class="card-title pt-4 m-0">@Html.DisplayFor(modelItem => item.ProductName)</h3>
+                        </a>
+
+                        <div class="card-text">
+                                @Html.DisplayFor(modelItem => item.Description)
+                                <h4 style="color:red" class="amount-old">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.UnitPriceOld)</h4>
+                                <h3 class="secondary-font text-primary">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0} VND", item.UnitPrice)</h3>
+
+                            <div class="d-flex flex-wrap mt-3">
+                                    <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.ProductId" class="btn-cart me-3 px-4 pt-3 pb-3">
+                                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                                    </a>
+                                    @* <a asp-action="Create" asp-controller="Favorites" asp-route-id="@item.ProductId" class="btn-wishlist px-4 pt-3 ">
+                                    <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                                    </a> *@
+                                    <div class="btn-wishlist px-3 pt-3">
+                                    <form asp-action="Create" asp-controller="Favorites" method="post">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class=" px-3 pt-3">
+                                            <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                                        </button>
+                                    </form>
+                                    </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            }
+
+
+
+        </div>
+
+
+    </div>
+</section>

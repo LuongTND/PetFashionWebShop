@@ -1,0 +1,7 @@
+﻿@model PetFashionWebShop.Models.Comment
+
+<form asp-action="Create" asp-controller="Comments" method="post">
+    <textarea name="commentText" class="form-control" placeholder="write a comment..." rows="3"></textarea>
+    <input type="hidden" name="productId" value="@Model.ProductId" />
+    <button type="submit" class="btn btn-info pull-right">Post</button>
+</form>

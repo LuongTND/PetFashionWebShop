@@ -1,0 +1,148 @@
+﻿@using System.Security.Claims
+@{
+    var roleid = User.FindFirstValue(ClaimTypes.Role);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PetFashionWebShop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PetFashionWebShop.styles.css" asp-append-version="true" />
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">PetFashionWebShop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                 @if (roleid == "1"){
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="default" asp-controller="Home" asp-action="Index">View Web</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-warning nav-link text-dark border border-info" asp-area="Admin" asp-controller="Products" asp-action="Index">Product</a>
+                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="ProductImages" asp-action="Index">ProductImage</a>
+                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Categories" asp-action="Index">Category</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Discounts" asp-action="Index">Discount</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger nav-link text-dark border border-info" asp-area="Admin" asp-controller="Orders" asp-action="Index">Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="OrderDetails" asp-action="Index">OrderDetail</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info " asp-area="Admin" asp-controller="Users" asp-action="Index">User</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="UserDetails" asp-action="Index">UserDetail</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Favorites" asp-action="Index">Favorite</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Blogs" asp-action="Index">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-info nav-link text-dark border border-info" asp-area="Admin" asp-controller="Comments" asp-action="Index">Comment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark border border-info" asp-area="Admin" asp-controller="Ratings" asp-action="Index">Rating</a>
+                        </li>
+                            <li class="nav-item">
+                                <a class="btn btn-danger nav-link text-dark border border-info" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                   
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-warning nav-link text-dark border border-info" asp-area="Admin" asp-controller="Authen" asp-action="Logout">
+
+                                    Logout
+                                </a>
+                            </li>
+
+                    </ul>
+                    <ul class="navbar-nav">
+                        <!-- User Name and Dropdown Menu -->
+                        <div class="dropdown border border-danger">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:large">
+                                @User.FindFirstValue(ClaimTypes.Name)
+                            </span>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in border-danger" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item " asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Dashboard
+                                </a>
+                                <a class="dropdown-item " asp-area="Admin" asp-controller="Authen" asp-action="Logout">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+
+
+                        @* <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle mx-3" role="button" id="pages" data-bs-toggle="dropdown" aria-expanded="false">
+                                <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="pages">
+                                    <li>
+                                        <a asp-controller="Authen" asp-action="LoginGooglePage" class="dropdown-item">
+                                            Login<span class="badge bg-success text-dark ms-2">Now</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Authen" asp-action="Logout" class="dropdown-item">
+                                            Logout <span class="badge bg-success text-danger ms-2">Bye</span>
+                                        </a>
+                                    </li>
+                            </ul>
+                        </li>*@
+                        @*ten nguoi dang nhap*@
+                        @*<span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.FindFirstValue(ClaimTypes.Name)</span> *@
+                    </ul>
+
+                </div>
+                }
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

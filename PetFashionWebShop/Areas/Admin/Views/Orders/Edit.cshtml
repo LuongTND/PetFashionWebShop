@@ -1,0 +1,75 @@
+﻿@model Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderReceivedDate" class="control-label"></label>
+                <input asp-for="OrderReceivedDate" class="form-control" />
+                <span asp-validation-for="OrderReceivedDate" class="text-danger"></span>
+            </div>
+            
+            @* <div class="form-group">
+                <label asp-for="StatusOrder" class="control-label"></label>
+                <input asp-for="StatusOrder" class="form-control" />
+                <span asp-validation-for="StatusOrder" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="StatusOrder" class="control-label"></label>
+                <select asp-for="StatusOrder" class="form-control">
+                    <option value="Đã đặt hàng" style="color: red;">Đã đặt hàng</option>
+                    <option value="Đang xác nhận đơn hàng" style="color: orange;">Đang xác nhận đơn hàng</option>
+                    <option value="Đang xác nhận thông tin chuyển khoản" style="color: yellow;">Đang xác nhận thông tin chuyển khoản</option>
+                    <option value="Đã chuẩn bị đơn hàng" style="color: green;">Đã chuẩn bị đơn hàng</option>
+                    <option value="Đã giao cho bên vận chuyển" style="color: blue;">Đã giao cho bên vận chuyển</option>
+                    <option value="Đang vận chuyển" style="color: indigo;">Đang vận chuyển</option>
+                    <option value="Giao hàng thành công" style="color: orangered;">Giao hàng thành công</option>
+                    <option value="Giao hàng thành công" style="color: black">Đang hoàn trả đơn hàng</option>
+                    <option value="Giao hàng thành công" style="color:violet">Đã Hủy đơn hàng</option>
+                </select>
+                <span asp-validation-for="StatusOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountId" class="control-label"></label>
+                <select asp-for="DiscountId" class="form-control" asp-items="ViewBag.DiscountId"></select>
+                <span asp-validation-for="DiscountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PetFashionWebShop.Models.Discount>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:orangered">DisCount</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PercentDiscount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DiscountId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DiscountId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DiscountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

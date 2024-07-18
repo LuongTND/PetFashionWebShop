@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color:orangered">Product</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPriceOld)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>    Image </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitStock)
+            </td>
+
+                <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Image)" style="width: 100px; height: auto;" />
+                </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPriceOld)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+                <!-- Cột hiển thị hình ảnh sản phẩm -->
+                <td>
+
+                    <!-- Duyệt qua tất cả các hình ảnh của sản phẩm -->
+                    @foreach (var image in item.ProductImages)
+                    {
+                        <!-- Hiển thị hình ảnh -->
+                        <img src="@image.ImageProduct" alt="Product Image" style="width: 100px; height: auto;" />
+                        <br />
+                    }
+
+                </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

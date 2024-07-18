@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Models.Category>
+
+<div class="mb-4 mb-md-0">
+    <p class="m-0">
+        <button class="filter-button me-4 active" data-filter="*">ALL</button>
+        @foreach (var category in Model)
+        {
+            <button class="filter-button me-4" data-filter=".@category.CategoryName.ToLower()">@category.CategoryName.ToUpper()</button>
+        }
+    </p>
+</div>
